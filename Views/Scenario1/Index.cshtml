@@ -1,0 +1,70 @@
+﻿@using DemoApp.Data
+@model List<Customer>
+
+@{
+    ViewBag.Title = "Customers";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <div class="card mt-5">
+                <div class="card-header">
+                    <div class="row align-items-center">
+                        <div class="col">
+                            <h4>
+                                Customers
+                            </h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-lg list-group-flush list my--4">
+                        @foreach(var customer in Model)
+                        {
+                        <li class="list-group-item px-0">
+                            <div class="row align-items-center">
+                                <div class="col-auto">
+                                    <span class="avatar avatar-lg">
+                                        <img src="@customer.Avatar" alt="" class="avatar-img">
+                                    </span>
+                                </div>
+                                <div class="col ml--2">
+                                    <h4 class="card-title mb-1">
+                                        <a href="#!">@GetCustomerFullName(customer)</a>
+                                    </h4>
+                                    <p class="card-text small text-muted mb-1">
+                                        @customer.EmailAddress
+                                    </p>
+                                </div>
+                                <div class="col-auto">
+                                    <form asp-action="Delete" asp-route-id="@customer.Id" data-ajax="true" data-ajax-success="deleteItem(this)">
+                                        <button type="submit" class="btn btn-sm btn-danger d-none d-md-inline-block">
+                                            Delete
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        function deleteItem(form) {
+            $(form).parents('li').remove();
+        }
+    </script>
+}
+
+@functions {
+    string GetCustomerFullName(Customer customer)
+    {
+        return $"{customer.FirstName} {customer.LastName}";
+    }
+} 
